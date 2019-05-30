@@ -16,9 +16,10 @@ const todoData = [
     completed: false
   }
 ];
-
-window.localStorage.setItem('todoData', JSON.stringify(todoData));
 const getTodoData= window.localStorage.getItem('todoData');
+if (getTodoData === undefined){
+   window.localStorage.setItem('todoData', JSON.stringify(todoData)) 
+}
 
 console.log(getTodoData)
 class App extends React.Component {
@@ -44,6 +45,7 @@ class App extends React.Component {
     if (this.state.todo.trim(' ') !== '') {
       const todo = {task:this.state.todo, id:uuid(), completed:false};
       todoItem.push(todo);
+      window.localStorage.setItem('todoData', JSON.stringify(todoItem));
       this.setState({todoItem:todoItem})
     }
   }
@@ -62,6 +64,7 @@ class App extends React.Component {
   clearTodo = ()=>{
     const todos = [...this.state.todoItem];
     const newTodo= todos.filter(todo=>todo.completed === false)
+    window.localStorage.setItem('todoData', JSON.stringify(newTodo));
     this.setState({todoItem:newTodo})
   }
 
