@@ -17,11 +17,10 @@ const todoData = [
   }
 ];
 const getTodoData= window.localStorage.getItem('todoData');
-if (getTodoData === undefined){
+
+if (getTodoData === null){
    window.localStorage.setItem('todoData', JSON.stringify(todoData)) 
 }
-
-console.log(getTodoData)
 class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
