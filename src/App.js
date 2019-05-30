@@ -17,9 +17,14 @@ const todoData = [
   }
 ];
 const getTodoData= window.localStorage.getItem('todoData');
-
-if (getTodoData === null){
+console.log(getTodoData)
+let datas = []
+if (getTodoData === null || getTodoData === [] || getTodoData === undefined){
    window.localStorage.setItem('todoData', JSON.stringify(todoData)) 
+   const tododatas= window.localStorage.getItem('todoData')
+   datas = JSON.parse(tododatas)
+} else {
+  datas= JSON.parse(getTodoData)
 }
 class App extends React.Component {
   // you will need a place to store your state in this component.
@@ -28,7 +33,7 @@ class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      todoItem : JSON.parse(getTodoData),
+      todoItem : datas,
       todo : '',
       searchTodo : '',
       displaySearch: []
