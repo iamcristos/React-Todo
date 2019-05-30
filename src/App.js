@@ -1,7 +1,9 @@
 import React from 'react';
 import uuid from 'uuid';
+import './App.css'
 import Todo from './components/TodoComponents/Todo'
 import TodoForm from './components/TodoComponents/TodoForm'
+import SearchTodo from './components/TodoComponents/searchTodo'
 const todoData = [
   {
     task: 'Organize Garage',
@@ -14,6 +16,11 @@ const todoData = [
     completed: false
   }
 ];
+
+window.localStorage.setItem('todoData', JSON.stringify(todoData));
+const getTodoData= window.localStorage.getItem('todoData');
+
+console.log(getTodoData)
 class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
@@ -21,7 +28,10 @@ class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      todoItem : todoData,
+      todoItem : JSON.parse(getTodoData),
+      todo : '',
+      searchTodo : '',
+      displaySearch: []
     }
   }
 
@@ -31,19 +41,20 @@ class App extends React.Component {
 
   addTodo = ()=>{
     const todoItem = [...this.state.todoItem];
-    const todo = {task:this.state.todo, id:uuid(), completed:false};
-    todoItem.push(todo);
-    this.setState({todoItem:todoItem})
+    if (this.state.todo.trim(' ') !== '') {
+      const todo = {task:this.state.todo, id:uuid(), completed:false};
+      todoItem.push(todo);
+      this.setState({todoItem:todoItem})
+    }
   }
 
   completeTodo = (e)=>{
     const todos = [...this.state.todoItem]
-   // eslint-disable-next-line array-callback-return
-   todos.find(todo => {
+   todos.forEach(todo => {
      if(todo.id === e) {
      todo.completed !== true ? todo.completed=true : todo.completed = false
      }
-      })
+  })
     this.setState({todoItem:todos})
 
   }
@@ -54,18 +65,34 @@ class App extends React.Component {
     this.setState({todoItem:newTodo})
   }
 
-  render() {
-    return (
-      <div>
-        <h2>Welcome to your Todo App!</h2>
-        {this.state.todoItem.map(todo=>(
-          <Todo key={todo.id} todoList={todo.task}
-            clicked={this.completeTodo} id={todo.id}
-            completed={todo.completed}
-          />
-        ))}
-        
+  searchHandler = (e)=>{
+    const value = e.target.value;
+    this.setState({searchTodo: value},()=>{
+    const todoSearch = this.state.searchTodo.toLowerCase()
+    const todoList = [...this.state.todoItem]
+    const items = todoList.filter(todo=>todo.task.toLowerCase().includes(todoSearch) )
+    this.setState({displaySearch:items})
+    })
+  }
 
+  render() {
+    let showTodo = null;
+    this.state.searchTodo !== '' ? showTodo = this.state.displaySearch
+      : showTodo = this.state.todoItem
+    return (
+      <div className='TodoApp'>
+        <div className='todo-header'>
+          <h2>Welcome to your Todo App!</h2>
+          <SearchTodo  search={this.searchHandler}/>
+        </div>
+        <div className='Todo'>
+            {showTodo.map(todo=>(
+              <Todo key={todo.id} todoList={todo.task}
+                clicked={this.completeTodo} id={todo.id}
+                completed={todo.completed}
+              />
+            ))}
+         </div>
         <TodoForm onChange={this.onChangeHandler} 
           clickedAdd={this.addTodo}
           clickedClear={this.clearTodo}

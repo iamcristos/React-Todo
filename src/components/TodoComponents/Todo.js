@@ -1,12 +1,10 @@
 import React from 'react'
 import TodoList from './TodoList'
-
+import './Todo.css'
 const Todo = (props)=>{
     return(
-        <div>
-            <TodoList todoList = {props.todoList} id={props.id}
-                clickedList={props.clicked} completed={props.completed}/>
-        </div>
+         <TodoList todoList = {props.todoList} id={props.id}
+            clickedList={props.clicked} completed={props.completed}/>
     )
 }
 

@@ -1,6 +1,7 @@
 // your components will all go in this `component` directory.
 // feel free to change this component.js into TodoList.js
 import React from 'react'
+import './Todo.css'
 const TodoList = (props)=>{
     let links = null
     if (props.completed) {
@@ -9,7 +10,7 @@ const TodoList = (props)=>{
        links= <li onClick={()=>props.clickedList(props.id)}>{props.todoList}</li>
     }
     return (
-        <div>
+        <div className='TodoList'>
             {links}
         </div>
     )

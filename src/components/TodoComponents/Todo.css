@@ -1,0 +1,13 @@
+
+.TodoList{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin: .2rem
+}
+
+.TodoList li{
+    list-style: none;
+    margin: .1rem;
+}
