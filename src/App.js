@@ -17,7 +17,6 @@ const todoData = [
   }
 ];
 const getTodoData= window.localStorage.getItem('todoData');
-console.log(getTodoData)
 let datas = []
 if (getTodoData === null || getTodoData === [] || getTodoData === undefined){
    window.localStorage.setItem('todoData', JSON.stringify(todoData)) 
@@ -61,8 +60,8 @@ class App extends React.Component {
      todo.completed !== true ? todo.completed=true : todo.completed = false
      }
   })
+  window.localStorage.setItem('todoData', JSON.stringify(todos));
     this.setState({todoItem:todos})
-
   }
 
   clearTodo = ()=>{
